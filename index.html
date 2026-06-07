@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cappy Hood | Premium Headwear Architecture</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Elegant smooth scrollbar layout */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #fdfdfd; }
+        ::-webkit-scrollbar-thumb { background: #111111; }
+
+        /* Hide scrollbars for the horizontal slide gallery container */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="antialiased text-black bg-white selection:bg-black selection:text-white relative">
+
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <div class="w-full bg-black text-white text-[9px] md:text-[11px] tracking-[0.2em] text-center py-2.5 uppercase font-medium px-4">
+        Complimentary Global Shipping On All Orders
+    </div>
+
+    <header id="main-header" class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-neutral-100 transition-transform duration-300 will-change-transform">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 md:h-20 flex items-center justify-between">
+            
+            <button onclick="toggleMobileMenu()" class="md:hidden p-2 -ml-2 text-black active:opacity-40 transition-opacity" aria-label="Toggle Menu">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+
+            <a href="#" class="text-lg md:text-xl font-black uppercase tracking-[0.3em] text-black active:scale-95 transition-transform">
+                Cappy Hood
+            </a>
+            
+            <nav class="hidden md:flex items-center space-x-10 text-[11px] font-semibold tracking-[0.2em] uppercase">
+                <a href="#" class="hover:text-neutral-500 transition-colors">New Arrivals</a>
+                <a href="#" class="hover:text-neutral-500 transition-colors">The Drop</a>
+                <a href="#" class="hover:text-neutral-500 transition-colors">Collections</a>
+                <a href="#" class="hover:text-neutral-500 transition-colors">Sustainability</a>
+            </nav>
+
+            <div class="flex items-center space-x-2 md:space-x-4">
+                <button onclick="toggleSearch()" class="p-2 hover:opacity-40 transition-opacity" aria-label="Search">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </button>
+                <button onclick="toggleCart()" class="p-2 hover:opacity-40 transition-opacity relative" aria-label="Cart">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                    <span id="cart-count" class="absolute top-1 right-1 bg-black text-white text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="mobile-menu" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="absolute inset-y-0 left-0 w-full max-w-xs bg-white p-6 flex flex-col justify-between shadow-2xl transition-transform duration-300 -translate-x-full" id="mobile-menu-container">
+            <div>
+                <div class="flex items-center justify-between mb-10">
+                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-neutral-400">Navigation</span>
+                    <button onclick="toggleMobileMenu()" class="p-2 text-black hover:opacity-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                </div>
+                <nav class="flex flex-col space-y-5 text-sm font-medium tracking-widest uppercase">
+                    <a href="#" class="py-2 border-b border-neutral-50 block">New Arrivals</a>
+                    <a href="#" class="py-2 border-b border-neutral-50 block">The Drop</a>
+                    <a href="#" class="py-2 border-b border-neutral-50 block">Collections</a>
+                    <a href="#" class="py-2 border-b border-neutral-50 block">Sustainability</a>
+                </nav>
+            </div>
+            <div class="text-[10px] tracking-wider uppercase text-neutral-400">
+                © 2026 Cappy Hood Studios.
+            </div>
+        </div>
+    </div>
+
+    <div id="search-overlay" class="fixed inset-0 z-50 bg-white/98 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300 flex flex-col justify-start pt-24 px-4 sm:px-6 overflow-y-auto pb-12">
+        <button onclick="toggleSearch()" class="absolute top-4 right-4 p-3"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+        <div class="max-w-2xl mx-auto w-full">
+            <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="SEARCH PIECES..." class="w-full bg-transparent text-xl md:text-3xl font-light tracking-wide uppercase border-b border-black pb-3 focus:outline-none placeholder:text-neutral-300">
+            
+            <div id="search-results" class="mt-8 space-y-4">
+                </div>
+        </div>
+    </div>
+
+    <div id="cart-drawer" class="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="absolute inset-y-0 right-0 w-full max-w-md bg-white p-5 sm:p-6 flex flex-col justify-between shadow-2xl transition-transform duration-300 translate-x-full" id="cart-container">
+            <div>
+                <div class="flex items-center justify-between border-b border-neutral-100 pb-4 mb-4">
+                    <h3 class="text-xs uppercase tracking-[0.2em] font-bold">Your Selection (<span id="cart-drawer-count">0</span>)</h3>
+                    <button onclick="toggleCart()" class="p-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                </div>
+
+                <!-- Shipping progress removed since always free -->
+                
+                <div id="cart-items-wrapper" class="space-y-4 overflow-y-auto max-h-[52vh]">
+                    <p id="empty-cart-msg" class="text-center text-xs text-neutral-400 uppercase tracking-widest py-12">Your cart is empty.</p>
+                </div>
+            </div>
+
+            <div class="border-t border-neutral-100 pt-4">
+                <!-- Coupon Section -->
+                <div id="coupon-section" class="mb-4">
+                    <div class="flex gap-2">
+                        <input type="text" id="coupon-input" placeholder="Coupon code " 
+                               class="flex-1 border border-neutral-200 px-3 py-2 text-xs uppercase tracking-widest focus:outline-none focus:border-black">
+                        <button onclick="applyCoupon()" 
+                                class="bg-black text-white text-xs font-bold uppercase tracking-widest px-6 hover:bg-neutral-800 transition-colors">
+                            Apply
+                        </button>
+                    </div>
+                    <div id="coupon-status" class="text-[10px] mt-1.5 hidden"></div>
+                </div>
+
+                <!-- Updated pricing breakdown -->
+                <div id="cart-pricing-breakdown" class="space-y-2 text-xs font-medium mb-4">
+                    <!-- Populated by JS -->
+                </div>
+                
+                <div class="flex justify-between items-center mb-4 text-sm font-bold uppercase tracking-wider border-t border-neutral-100 pt-3">
+                    <span>Total</span>
+                    <span id="cart-total-price">₹0</span>
+                </div>
+                <button onclick="sendWhatsAppCheckout()" class="w-full bg-black text-white text-xs font-bold uppercase tracking-widest py-3.5 hover:bg-neutral-800 transition-colors active:scale-[0.99]">
+                    Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="product-page-panel" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 flex justify-end">
+        <div id="product-panel-container" class="w-full max-w-2xl bg-white h-full shadow-2xl translate-x-full transition-transform duration-300 flex flex-col">
+            <div class="flex justify-between items-center p-6 border-b border-neutral-100">
+                <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-neutral-400">Product Blueprint / Architecture</span>
+                <button onclick="closeProductPanel()" class="p-2 text-black hover:opacity-50 transition-opacity">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-6 space-y-6">
+                <div class="space-y-3 relative group/gallery">
+                    <div class="bg-neutral-50 aspect-[4/5] w-full overflow-hidden relative">
+                        <div id="panel-slider-container" class="w-full h-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth">
+                            </div>
+
+                        <button onclick="scrollGallery(-1)" class="absolute left-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white backdrop-blur-sm p-2 rounded-full border border-neutral-200 transition-opacity opacity-0 group-hover/gallery:opacity-100 z-10 hidden sm:block">
+                            <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        </button>
+                        <button onclick="scrollGallery(1)" class="absolute right-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white backdrop-blur-sm p-2 rounded-full border border-neutral-200 transition-opacity opacity-0 group-hover/gallery:opacity-100 z-10 hidden sm:block">
+                            <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                    </div>
+
+                    <div id="panel-thumbs-container" class="flex gap-2 overflow-x-auto pb-2">
+                        </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="flex justify-between items-start gap-4">
+                        <div>
+                            <h2 id="panel-product-title" class="text-xl md:text-2xl font-black uppercase tracking-tight"></h2>
+                        </div>
+                        <span id="panel-product-price" class="text-lg font-black tracking-tight whitespace-nowrap"></span>
+                    </div>
+                    
+                    <div class="border-t border-b border-neutral-100 py-4">
+                        <p class="text-xs font-bold tracking-widest uppercase text-neutral-400 mb-2">Specifications</p>
+                        <p id="panel-product-desc" class="text-xs text-neutral-600 leading-relaxed font-light"></p>
+                    </div>
+
+                    <div class="space-y-4 pt-2">
+                        <div id="panel-controls-container" class="w-full space-y-3">
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="relative h-[65vh] md:h-[calc(100vh-120px)] min-h-[460px] bg-neutral-900 overflow-hidden">
+        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('https://cappyhood.free.je/images/cappyhood2nd.png');">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+        </div>
+        
+        <div class="absolute inset-0 flex flex-col justify-end p-5 sm:p-10 md:p-20 text-white z-10 max-w-7xl mx-auto w-full">
+            <p class="text-[9px] sm:text-xs uppercase tracking-[0.4em] mb-2 font-medium text-white/70">Issue N° 04 / Core Silhouette</p>
+            <h1 class="text-3xl sm:text-6xl md:text-8xl font-black uppercase tracking-tight leading-[0.95] mb-6 max-w-2xl">
+                REDEFINING<br>THE PROFILE.
+            </h1>
+            <div>
+                <a href="#product-grid" class="inline-block text-center bg-white text-black text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase px-8 py-3.5 hover:bg-black hover:text-white transition-all transform active:scale-95 shadow-md">
+                    Shop Drops
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="product-grid" class="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-24">
+        <div class="flex justify-between items-baseline mb-8 md:mb-14 border-b border-neutral-100 pb-3">
+            <h2 class="text-[10px] md:text-[11px] uppercase tracking-[0.3em] font-bold text-neutral-400">Curated Architecture / Premium Utility (10 Pieces)</h2>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-12 items-stretch">
+            
+            <!-- Product 1 -->
+            <div onclick="openProductPanel(1)" class="group cursor-pointer flex flex-col justify-between h-full bg-white border border-transparent hover:border-neutral-100 p-2 transition-all duration-300">
+                <div>
+                    <div class="bg-neutral-50 aspect-[4/5] overflow-hidden relative w-full mb-4">
+                        <span class="absolute top-3 left-3 z-10 bg-black text-white text-[8px] md:text-[9px] font-bold tracking-widest uppercase px-2 py-0.5">New</span>
+                        <img src="https://ik.imagekit.io/1b9lhqavr/cap%20images/front/1780763764631.jpg?updatedAt=1780776116870" alt="Vintage Distressed Rock Shark Cap - Charcoal" class="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-500 ease-out">
+                    </div>
+                    <div class="space-y-1.5 px-1">
+                        <h3 class="font-bold uppercase tracking-wide text-xs md:text-sm text-neutral-900 group-hover:text-neutral-600 transition-colors line-clamp-1">Vintage Distressed Rock Shark Cap - Charcoal</h3>
+                        <p class="text-[9px] md:text-[10px] text-neutral-400 uppercase font-medium tracking-normal truncate">A rugged, charcoal-grey distressed baseball cap featuring "Rock Shark" embroidered on a raw-edge patch.</p>
+                        <p class="font-black text-xs md:text-sm text-neutral-900 pt-1">₹399</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div onclick="openProductPanel(2)" class="group cursor-pointer flex flex-col justify-between h-full bg-white border border-transparent hover:border-neutral-100 p-2 transition-all duration-300">
+                <div>
+                    <div class="bg-neutral-50 aspect-[4/5] overflow-hidden relative w-full mb-4">
+                        <img src="https://ik.imagekit.io/1b9lhqavr/cap%20images/front/1780763825817.jpg?updatedAt=1780776116994" alt="Vintage Distressed Rock Shark Cap - Maroon" class="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-500 ease-out">
+                    </div>
+                    <div class="space-y-1.5 px-1">
+                        <h3 class="font-bold uppercase tracking-wide text-xs md:text-sm text-neutral-900 group-hover:text-neutral-600 transition-colors line-clamp-1">Vintage Distressed Rock Shark Cap - Maroon</h3>
+                        <p class="text-[9px] md:text-[10px] text-neutral-400 uppercase font-medium tracking-normal truncate">A bold, maroon-colored distressed baseball cap with "Rock Shark" branding and vintage details.</p>
+                        <p class="font-black text-xs md:text-sm text-neutral-900 pt-1">₹399</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div onclick="openProductPanel(3)" class="group cursor-pointer flex flex-col justify-between h-full bg-white border border-transparent hover:border-neutral-100 p-2 transition-all duration-300">
+                <div>
+                    <div class="bg-neutral-50 aspect-[4/5] overflow-hidden relative w-full mb-4">
+                        <span class="absolute top-3 left-3 z-10 bg-neutral-900 text-white text-[8px] font-bold tracking-widest uppercase px-2 py-0.5">Low Stock</span>
+                        <img src="https://ik.imagekit.io/1b9lhqavr/cap%20images/front/1780763870990.jpg?updatedAt=1780776116911" alt="Vintage Distressed Rock Shark Cap - Blue" class="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-500 ease-out">
+                    </div>
+                    <div class="space-y-1.5 px-1">
+                        <h3 class="font-bold uppercase tracking-wide text-xs md:text-sm text-neutral-900 group-hover:text-neutral-600 transition-colors line-clamp-1">Vintage Distressed Rock Shark Cap - Blue</h3>
+                        <p class="text-[9px] md:text-[10px] text-neutral-400 uppercase font-medium tracking-normal truncate">This blue distressed cap maintains the signature "Rock Shark" and "Kingston 1969" branding.</p>
+                        <p class="font-black text-xs md:text-sm text-neutral-900 pt-1">₹399</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div onclick="openProductPanel(4)" class="group cursor-pointer flex flex-col justify-between h-full bg-white border border-transparent hover:border-neutral-100 p-2 transition-all duration-300">
+                <div>
+                    <div class="bg-neutral-50 aspect-[4/5] overflow-hidden relative w-full mb-4">
+                        <img src="https://ik.imagekit.io/1b9lhqavr/cap%20images/front/1780764049456.jpg?updatedAt=1780776116657" alt="Vintage Distressed Rock Shark Cap - Forest Green" class="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-500 ease-out">
+                    </div>
+                    <div class="space-y-1.5 px-1">
+                        <h3 class="font-bold uppercase tracking-wide text-xs md:text-sm text-neutral-900 group-hover:text-neutral-600 transition-colors line-clamp-1">Vintage Distressed Rock Shark Cap - Forest Green</h3>
+                        <p class="text-[9px] md:text-[10px] text-neutral-400 uppercase font-medium tracking-normal truncate">A unique forest green distressed baseball cap featuring the classic "Rock Shark" patch.</p>
+                        <p class="font-black text-xs md:text-sm text-neutral-900 pt-1">₹399</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 5 -->
+            <div onclick="openProductPanel(5)" class="group cursor-pointer flex flex-col justify-between h-full bg-white border border-transparent hover:border-neutral-100 p-2 transition-all duration-300">
+                <div>
+                    <div class="bg-neutral-50 aspect-[4/5] overflow-hidden relative w-full mb-4">
+                        <span class="absolute top-3 left-3 z-10 bg-black text-white text-[8px] md:text-[9px] font-bold tracking-widest uppercase px-2 py-0.5">Best Seller</span>
+                        <img src="https://ik.imagekit.io/1b9lhqavr/cap%20images/front/1780764098384.jpg?updatedAt=1780776116852" alt="Vintage Distressed Rock Shark Cap - Beige" class="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-500 ease-out">
+                    </div>
+                    <div class="space-y-1.5 px-1">
+                        <h3 class="font-bold uppercase tracking-wide text-xs md:text-sm text-neutral-900 group-hover:text-neutral-600 transition-colors line-clamp-1">Vintage Distressed Rock Shark Cap - Beige</h3>
+                        <p class="text-[9px] md:text-[10px] text-neutral-400 uppercase font-medium tracking-normal truncate">A classic beige distressed cap featuring blue embroidery for the "Rock Shark" logo.</p>
+                        <p class="font-black text-xs md:text-sm text-neutral-900 pt-1">₹399</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 6 -->
+            <div onclick="openProductPanel(6)" class="group cursor-pointer flex flex-col justify-between h-full bg-white border border-transparent hover:border-neutral-100 p-2 transition-all duration-300">
+                <div>
+                    <div class="bg-neutral-50 aspect-[4/5] overflow-hidden relative w-full mb-4">
+                        <img src="https://ik.imagekit.io/1b9lhqavr/cap%20images/front/1780764598234.jpg?updatedAt=1780776116552" alt="Vintage Distressed Rock Shark Cap - Earth Brown" class="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-500 ease-out">
+                    </div>
+                    <div class="space-y-1.5 px-1">
+                        <h3 class="font-bold uppercase tracking-wide text-xs md:text-sm text-neutral-900 group-hover:text-neutral-600 transition-colors line-clamp-1">Vintage Distressed Rock Shark Cap - Earth Brown</h3>
+                        <p class="text-[9px] md:text-[10px] text-neutral-400 uppercase font-medium tracking-normal truncate">An earth-toned brown distressed cap with dark, high-contrast "Rock Shark" embroidery.</p>
+                        <p class="font-black text-xs md:text-sm text-neutral-900 pt-1">₹399</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 7 -->
+            <div onclick="openProductPanel(7)" class="group cursor-pointer flex flex-col justify-between h-full bg-white border border-transparent hover:border-neutral-100 p-2 transition-all duration-300">
+                <div>
+                    <div class="bg-neutral-50 aspect-[4/5] overflow-hidden relative w-full mb-4">
+                        <img src="https://ik.imagekit.io/1b9lhqavr/cap%20images/front/1780764288526.jpg?updatedAt=1780776116373" alt="Distressed Shark & Sportsnwe Cap - Grey" class="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-500 ease-out">
+                    </div>
+                    <div class="space-y-1.5 px-1">
+                        <h3 class="font-bold uppercase tracking-wide text-xs md:text-sm text-neutral-900 group-hover:text-neutral-600 transition-colors line-clamp-1">Distressed Shark & Sportsnwe Cap - Grey</h3>
+                        <p class="text-[9px] md:text-[10px] text-neutral-400 uppercase font-medium tracking-normal truncate">A light grey distressed cap featuring a dynamic shark graphic and "Sportsnwe" branding.</p>
+                        <p class="font-black text-xs md:text-sm text-neutral-900 pt-1">₹349</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 8 -->
+            <div onclick="openProductPanel(8)" class="group cursor-pointer flex flex-col justify-between h-full bg-white border border-transparent hover:border-neutral-100 p-2 transition-all duration-300">
+                <div>
+                    <div class="bg-neutral-50 aspect-[4/5] overflow-hidden relative w-full mb-4">
+                        <img src="https://ik.imagekit.io/1b9lhqavr/cap%20images/front/1780764310802.jpg?updatedAt=1780776116947" alt="Distressed Shark & Sportsnwe Cap - Charcoal" class="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-500 ease-out">
+                    </div>
+                    <div class="space-y-1.5 px-1">
+                        <h3 class="font-bold uppercase tracking-wide text-xs md:text-sm text-neutral-900 group-hover:text-neutral-600 transition-colors line-clamp-1">Distressed Shark & Sportsnwe Cap - Charcoal</h3>
+                        <p class="text-[9px] md:text-[10px] text-neutral-400 uppercase font-medium tracking-normal truncate">A darker charcoal distressed shark cap with bold graphics and streetwear aesthetic.</p>
+                        <p class="font-black text-xs md:text-sm text-neutral-900 pt-1">₹349</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 9 -->
+            <div onclick="openProductPanel(9)" class="group cursor-pointer flex flex-col justify-between h-full bg-white border border-transparent hover:border-neutral-100 p-2 transition-all duration-300">
+                <div>
+                    <div class="bg-neutral-50 aspect-[4/5] overflow-hidden relative w-full mb-4">
+                        <span class="absolute top-3 left-3 z-10 bg-black text-white text-[8px] md:text-[9px] font-bold tracking-widest uppercase px-2 py-0.5">Premium</span>
+                        <img src="https://ik.imagekit.io/1b9lhqavr/cap%20images/hiphop/1780763506960.jpg?updatedAt=1780776116592" alt="Premium Solid Black Snapback" class="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-500 ease-out">
+                    </div>
+                    <div class="space-y-1.5 px-1">
+                        <h3 class="font-bold uppercase tracking-wide text-xs md:text-sm text-neutral-900 group-hover:text-neutral-600 transition-colors line-clamp-1">Premium Solid Black Snapback</h3>
+                        <p class="text-[9px] md:text-[10px] text-neutral-400 uppercase font-medium tracking-normal truncate">A sleek, minimalist premium snapback in solid black with structured crown.</p>
+                        <p class="font-black text-xs md:text-sm text-neutral-900 pt-1">₹249</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 10 -->
+            <div onclick="openProductPanel(10)" class="group cursor-pointer flex flex-col justify-between h-full bg-white border border-transparent hover:border-neutral-100 p-2 transition-all duration-300">
+                <div>
+                    <div class="bg-neutral-50 aspect-[4/5] overflow-hidden relative w-full mb-4">
+                        <img src="https://ik.imagekit.io/1b9lhqavr/cap%20images/hiphop/1780763557208.jpg?updatedAt=1780776116998" alt='"46" Sports Graphic Snapback - Red/Black' class="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-500 ease-out">
+                    </div>
+                    <div class="space-y-1.5 px-1">
+                        <h3 class="font-bold uppercase tracking-wide text-xs md:text-sm text-neutral-900 group-hover:text-neutral-600 transition-colors line-clamp-1">"46" Sports Graphic Snapback - Red/Black</h3>
+                        <p class="text-[9px] md:text-[10px] text-neutral-400 uppercase font-medium tracking-normal truncate">A striking two-tone snapback with bold neon-green "46" embroidery.</p>
+                        <p class="font-black text-xs md:text-sm text-neutral-900 pt-1">₹249</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="bg-black text-white pt-16 pb-8 border-t border-neutral-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-[11px] font-light text-neutral-400 uppercase tracking-wider">
+            <div class="space-y-3">
+                <span class="text-base font-black tracking-[0.2em] text-white block">Cappy Hood</span>
+                <p class="text-[10px] leading-relaxed lowercase text-neutral-500 font-normal">Premium design structures engineered for everyday ergonomic architecture.</p>
+            </div>
+            <div class="space-y-2">
+                <h5 class="font-bold text-white text-[10px] tracking-widest">Drops</h5>
+                <a href="#" class="block hover:text-white transition-colors">Shop All</a>
+                <a href="#" class="block hover:text-white transition-colors">Core Collection</a>
+            </div>
+            <div class="space-y-3">
+                <h5 class="font-bold text-white text-[10px] tracking-widest">Community</h5>
+                <a href="https://instagram.com/raz1h" target="_blank" class="inline-flex items-center space-x-2 text-neutral-400 hover:text-white transition-colors" aria-label="Instagram">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    <span>@CAPPYHOOD</span>
+                </a>
+                <p class="text-[10px] leading-relaxed text-neutral-400 lowercase pt-1">
+                    want to create a website like this? contact <a href="https://instagram.com/raz1h" target="_blank" class="text-white hover:text-neutral-300 underline font-black tracking-wider uppercase transition-colors">@raz1h</a>
+                </p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 mt-12 pt-6 border-t border-neutral-900 text-center sm:text-left text-[9px] text-neutral-600">
+            © 2026 Cappy Hood Studios Inc. All Architecture Preserved.
+        </div>
+    </footer>
+
+    <script>
+        // Central Repository database
+        const productsDatabase = {
+            1: { id: 1, title: "Vintage Distressed Rock Shark Cap - Charcoal", price: 399, images: ["https://ik.imagekit.io/1b9lhqavr/cap%20images/front/1780763764631.jpg?updatedAt=1780776116870", "https://ik.imagekit.io/1b9lhqavr/cap%20images/side/1780763382969.jpg?updatedAt=1780776116199"], desc: "A rugged, charcoal-grey distressed baseball cap featuring \"Rock Shark\" embroidered on a raw-edge patch, along with \"Kingston 1969\" and \"Trademark\" detailing. The brim includes faded \"Service Car\" and \"Checkpoint\" graphics." },
+            2: { id: 2, title: "Vintage Distressed Rock Shark Cap - Maroon", price: 399, images: ["https://ik.imagekit.io/1b9lhqavr/cap%20images/front/1780763825817.jpg?updatedAt=1780776116994", "https://ik.imagekit.io/1b9lhqavr/cap%20images/side/1780762311662.jpg?updatedAt=1780776114004"], desc: "A bold, maroon-colored distressed baseball cap with the same \"Rock Shark\" branding, \"Kingston 1969\" embroidery, and \"Service Car\" brim graphics as the charcoal version." },
+            3: { id: 3, title: "Vintage Distressed Rock Shark Cap - Blue", price: 399, images: ["https://ik.imagekit.io/1b9lhqavr/cap%20images/front/1780763870990.jpg?updatedAt=1780776116911", "https://ik.imagekit.io/1b9lhqavr/cap%20images/side/1780762409335.jpg?updatedAt=1780776116108"], desc: "This blue distressed cap maintains the signature \"Rock Shark\" and \"Kingston 1969\" branding, complemented by a contrast-color brim and faded utility-style graphics." },
+            4: { id: 4, title: "Vintage Distressed Rock Shark Cap - Forest Green", price: 399, images: ["https://ik.imagekit.io/1b9lhqavr/cap%20images/front/1780764049456.jpg?updatedAt=1780776116657", "https://ik.imagekit.io/1b9lhqavr/cap%20images/side/1780762197172.jpg?updatedAt=1780776115476"], desc: "A unique forest green distressed baseball cap featuring the classic \"Rock Shark\" patch, \"Kingston 1969\" text, and worn-in detailing for a vintage aesthetic." },
+            5: { id: 5, title: "Vintage Distressed Rock Shark Cap - Beige", price: 399, images: ["https://ik.imagekit.io/1b9lhqavr/cap%20images/front/1780764098384.jpg?updatedAt=1780776116852", "https://ik.imagekit.io/1b9lhqavr/cap%20images/side/1780762544665.jpg?updatedAt=1780776116538"], desc: "A classic beige distressed cap, perfect for a casual look, featuring blue embroidery for the \"Rock Shark\" logo, \"Kingston 1969\" text, and matching faded brim graphics." },
+            6: { id: 6, title: "Vintage Distressed Rock Shark Cap - Earth Brown", price: 399, images: ["https://ik.imagekit.io/1b9lhqavr/cap%20images/front/1780764049456.jpg?updatedAt=1780776116657", "https://ik.imagekit.io/1b9lhqavr/cap%20images/side/1780764524302.jpg?updatedAt=1780776113899"], desc: "An earth-toned brown distressed cap, complete with dark, high-contrast embroidery for the \"Rock Shark\" and \"Kingston 1969\" logos, offering a rugged, worn-in feel." },
+            7: { id: 7, title: "Distressed Shark & Sportsnwe Cap - Grey", price: 349, images: ["https://ik.imagekit.io/1b9lhqavr/cap%20images/front/1780764288526.jpg?updatedAt=1780776116373", "https://ik.imagekit.io/1b9lhqavr/cap%20images/side/1780763273482.jpg?updatedAt=1780776115576"], desc: "A light grey distressed cap featuring a dynamic shark graphic emblem, \"Sharks\" embroidery, and \"Sportsnwe\" text on the brim, creating an edgy, athletic-inspired look." },
+            8: { id: 8, title: "Distressed Shark & Sportsnwe Cap - Charcoal", price: 349, images: ["https://ik.imagekit.io/1b9lhqavr/cap%20images/front/1780764310802.jpg?updatedAt=1780776116947", "https://ik.imagekit.io/1b9lhqavr/cap%20images/side/1780763382969.jpg?updatedAt=1780776116199"], desc: "A darker, charcoal-colored version of the distressed shark cap, maintaining the \"Sportsnwe\" brim branding and bold shark graphic patch for a streetwear aesthetic." },
+            9: { id: 9, title: "Premium Solid Black Snapback", price: 249, images: ["https://ik.imagekit.io/1b9lhqavr/cap%20images/hiphop/1780763506960.jpg?updatedAt=1780776116592", "https://ik.imagekit.io/1b9lhqavr/cap%20images/hiphop/1780763506960.jpg?updatedAt=1780776116592"], desc: "A sleek, minimalist premium snapback in solid black. Features a structured crown and a flat brim, providing a clean, versatile look suitable for any outfit." },
+            10: { id: 10, title: "\"46\" Sports Graphic Snapback - Red/Black", price: 249, images: ["https://ik.imagekit.io/1b9lhqavr/cap%20images/hiphop/1780763557208.jpg?updatedAt=1780776116998", "https://ik.imagekit.io/1b9lhqavr/cap%20images/hiphop/1780763557208.jpg?updatedAt=1780776116998"], desc: "A striking two-tone snapback featuring a bold, neon-green embroidered \"46\" on a bright red crown, paired with a contrasting black flat brim for a racing-inspired style." }
+        };
+
+        let userCart = [];
+        let appliedCouponCode = '';
+        let appliedDiscount = 0; // ₹50 for raz1h
+
+        const SHIPPING_FEE = 0; // Delivery fee is now always 0
+
+        function calculateShipping(subtotal) {
+            return SHIPPING_FEE; // Always 0
+        }
+
+        function getCartTotals() {
+            let subtotal = 0;
+            userCart.forEach(item => {
+                const product = productsDatabase[item.id];
+                subtotal += product.price * item.quantity;
+            });
+            const shipping = calculateShipping(subtotal);
+            const discount = appliedDiscount;
+            const total = Math.max(0, subtotal + shipping - discount);
+            return { subtotal, shipping, discount, total };
+        }
+
+        function applyCoupon() {
+            const input = document.getElementById('coupon-input');
+            const code = input.value.trim().toLowerCase();
+            const statusEl = document.getElementById('coupon-status');
+            
+            if (code === 'raz1h') {
+                appliedCouponCode = 'raz1h';
+                appliedDiscount = 50;
+                statusEl.className = 'text-[10px] mt-1.5 text-emerald-600 font-medium';
+                statusEl.innerHTML = `✅ Coupon <span class="font-bold">"raz1h"</span> applied (₹50 off)`;
+                statusEl.classList.remove('hidden');
+                renderCartUI();
+                showCartToast('Coupon applied successfully!');
+            } else if (code === '') {
+                // do nothing
+            } else {
+                statusEl.className = 'text-[10px] mt-1.5 text-red-500';
+                statusEl.textContent = 'Invalid coupon code';
+                statusEl.classList.remove('hidden');
+            }
+        }
+
+        // Updated renderCartUI
+        function renderCartUI() {
+            const wrapper = document.getElementById('cart-items-wrapper');
+            const badgeCount = document.getElementById('cart-count');
+            const drawerCount = document.getElementById('cart-drawer-count');
+            const priceLabel = document.getElementById('cart-total-price');
+            const breakdownContainer = document.getElementById('cart-pricing-breakdown');
+
+            let totalItems = 0;
+            let subtotal = 0;
+            wrapper.innerHTML = "";
+
+            if (userCart.length === 0) {
+                wrapper.innerHTML = `<p id="empty-cart-msg" class="text-center text-xs text-neutral-400 uppercase tracking-widest py-12">Your cart is empty.</p>`;
+                breakdownContainer.innerHTML = '';
+                document.getElementById('coupon-section').style.display = 'none';
+            } else {
+                document.getElementById('coupon-section').style.display = 'block';
+                userCart.forEach(cartNode => {
+                    const info = productsDatabase[cartNode.id];
+                    totalItems += cartNode.quantity;
+                    subtotal += (info.price * cartNode.quantity);
+
+                    const card = document.createElement('div');
+                    card.className = "flex items-center space-x-3 border-b border-neutral-50 pb-4";
+                    card.innerHTML = `
+                        <div class="w-16 h-20 bg-neutral-100 flex-shrink-0">
+                            <img src="${info.images[0]}" class="w-full h-full object-cover" alt="Thumb">
+                        </div>
+                        <div class="flex-1 flex flex-col justify-between h-20 text-xs">
+                            <div>
+                                <div class="flex justify-between items-start gap-2">
+                                    <h4 class="font-bold uppercase tracking-wide truncate max-w-[150px]">${info.title}</h4>
+                                    <button onclick="removeCartItem(${cartNode.id})" class="text-neutral-400 hover:text-black transition-colors font-medium text-[10px]">×</button>
+                                </div>
+                                <p class="text-[10px] text-neutral-400 uppercase mt-0.5 line-clamp-1">${info.desc}</p>
+                            </div>
+                            <div class="flex items-center justify-between pt-1">
+                                <div class="flex items-center border border-neutral-200 bg-white">
+                                    <button onclick="adjustCartQuantity(${cartNode.id}, -1)" class="px-2 py-0.5 text-neutral-400 hover:text-black transition-colors font-bold text-xs">-</button>
+                                    <span class="px-2 text-[10px] font-bold text-neutral-700 font-mono">${cartNode.quantity}</span>
+                                    <button onclick="adjustCartQuantity(${cartNode.id}, 1)" class="px-2 py-0.5 text-neutral-400 hover:text-black transition-colors font-bold text-xs">+</button>
+                                </div>
+                                <span class="font-bold text-neutral-900">₹${(info.price * cartNode.quantity).toLocaleString('en-IN')}</span>
+                            </div>
+                        </div>
+                    `;
+                    wrapper.appendChild(card);
+                });
+
+                const { subtotal: st, shipping, discount, total } = getCartTotals();
+
+                // Pricing breakdown
+                let breakdownHTML = `
+                    <div class="flex justify-between text-xs">
+                        <span class="text-neutral-600">Subtotal</span>
+                        <span class="font-medium">₹${st.toLocaleString('en-IN')}</span>
+                    </div>
+                `;
+                
+                if (discount > 0) {
+                    breakdownHTML += `
+                        <div class="flex justify-between text-xs text-emerald-600">
+                            <span>Coupon Discount (raz1h)</span>
+                            <span>-₹${discount}</span>
+                        </div>
+                    `;
+                }
+                
+                breakdownHTML += `
+                    <div class="flex justify-between text-xs">
+                        <span class="text-neutral-600">Shipping</span>
+                        <span class="font-medium text-emerald-600">FREE</span>
+                    </div>
+                `;
+
+                breakdownContainer.innerHTML = breakdownHTML;
+
+                priceLabel.innerText = "₹" + total.toLocaleString('en-IN');
+            }
+
+            badgeCount.innerText = totalItems;
+            drawerCount.innerText = totalItems;
+        }
+
+        // Updated WhatsApp message
+        function sendWhatsAppCheckout() {
+            if (userCart.length === 0) {
+                alert("Your checkout cart configuration is empty.");
+                return;
+            }
+
+            const whatsappNumber = "9127123126";
+            const { subtotal, shipping, discount, total } = getCartTotals();
+            
+            let message = "📦 NEW ORDER REQUEST - CAPPY HOOD\n";
+            message += "━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+            message += "Hello Team Cappy Hood,\n";
+            message += "I would like to place an order for the following curated architecture:\n\n";
+            
+            userCart.forEach((item, index) => {
+                const product = productsDatabase[item.id];
+                const itemTotal = product.price * item.quantity;
+                message += `${index + 1}. ${product.title.toUpperCase()}\n`;
+                message += `   [Qty: ${item.quantity}] • ₹${product.price.toLocaleString('en-IN')} each\n`;
+                message += `   • Item Total: ₹${itemTotal.toLocaleString('en-IN')}\n\n`;
+            });
+
+            message += "━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+            message += `Subtotal: ₹${subtotal.toLocaleString('en-IN')}\n`;
+            if (discount > 0) {
+                message += `Coupon (raz1h): -₹${discount}\n`;
+            }
+            message += `Shipping: FREE\n`;
+            message += `💰 GRAND TOTAL: ₹${total.toLocaleString('en-IN')}\n\n`;
+            message += "Please verify stock availability and guide me through the completion steps. Thank you!";
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function addItemToCart(productId) {
+            const itemMatch = userCart.find(item => item.id === productId);
+            if (itemMatch) {
+                itemMatch.quantity += 1;
+            } else {
+                userCart.push({ id: productId, quantity: 1 });
+            }
+            renderCartUI();
+        }
+
+        function adjustCartQuantity(productId, amount) {
+            const itemNode = userCart.find(item => item.id === productId);
+            if (!itemNode) return;
+            itemNode.quantity += amount;
+            if (itemNode.quantity <= 0) {
+                userCart = userCart.filter(item => item.id !== productId);
+            }
+            renderCartUI();
+        }
+
+        function removeCartItem(productId) {
+            userCart = userCart.filter(item => item.id !== productId);
+            renderCartUI();
+            if (!document.getElementById('product-page-panel').classList.contains('pointer-events-none')) {
+                updatePanelControlsUI(productId);
+            }
+        }
+
+        function showCartToast(productTitle) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = "bg-black text-white text-[11px] font-bold uppercase tracking-widest px-5 py-3.5 shadow-xl border border-neutral-800 transition-all duration-300 opacity-0 transform translate-y-2 pointer-events-auto flex items-center justify-between gap-4 max-w-sm";
+            toast.innerHTML = `
+                <span>${productTitle}</span>
+                <button onclick="this.parentElement.remove()" class="text-neutral-400 hover:text-white transition-colors ml-2 font-light">×</button>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.remove('opacity-0', 'translate-y-2'), 10);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        function updatePanelControlsUI(productId) {
+            const container = document.getElementById('panel-controls-container');
+            const activeCartItem = userCart.find(item => item.id === productId);
+            if (!activeCartItem) {
+                container.innerHTML = `
+                    <button onclick="handlePanelAdd(${productId})" class="w-full bg-black text-white text-xs font-bold uppercase tracking-widest py-4 hover:bg-neutral-800 transition-colors active:scale-[0.99] transform transition-transform">
+                        Add to Selection Cart
+                    </button>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="flex items-center justify-between border border-black w-full bg-white h-12">
+                        <button onclick="handlePanelQuantityChange(${productId}, -1)" class="w-16 h-full flex items-center justify-center font-bold text-neutral-500 hover:text-black transition-colors active:bg-neutral-50 text-sm">-</button>
+                        <span class="text-xs font-bold tracking-widest uppercase">In Selection / Qty: ${activeCartItem.quantity}</span>
+                        <button onclick="handlePanelQuantityChange(${productId}, 1)" class="w-16 h-full flex items-center justify-center font-bold text-neutral-500 hover:text-black transition-colors active:bg-neutral-50 text-sm">+</button>
+                    </div>
+                    <button onclick="triggerCheckout()" class="w-full bg-neutral-100 text-black border border-neutral-200 text-xs font-bold uppercase tracking-widest py-3.5 hover:bg-black hover:text-white hover:border-black transition-all active:scale-[0.99]">
+                        Proceed to Checkout
+                    </button>
+                `;
+            }
+        }
+
+        function handlePanelAdd(productId) {
+            const product = productsDatabase[productId];
+            addItemToCart(productId);
+            showCartToast(`Added: ${product.title}`);
+            updatePanelControlsUI(productId);
+        }
+
+        function handlePanelQuantityChange(productId, change) {
+            adjustCartQuantity(productId, change);
+            updatePanelControlsUI(productId);
+        }
+
+        function triggerCheckout() {
+            closeProductPanel();
+            setTimeout(() => toggleCart(), 250);
+        }
+
+        function scrollGallery(direction) {
+            const container = document.getElementById('panel-slider-container');
+            const scrollAmount = container.clientWidth;
+            container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+        }
+
+        function syncActiveThumbnailBorder() {
+            const container = document.getElementById('panel-slider-container');
+            const thumbs = document.querySelectorAll('.panel-thumb-btn');
+            const activeIndex = Math.round(container.scrollLeft / container.clientWidth);
+            thumbs.forEach((thumb, idx) => {
+                if (idx === activeIndex) {
+                    thumb.classList.remove('border-neutral-200');
+                    thumb.classList.add('border-black');
+                } else {
+                    thumb.classList.remove('border-black');
+                    thumb.classList.add('border-neutral-200');
+                }
+            });
+        }
+
+        function jumpToGalleryImage(index) {
+            const container = document.getElementById('panel-slider-container');
+            const scrollAmount = container.clientWidth;
+            container.scrollTo({ left: index * scrollAmount, behavior: 'smooth' });
+        }
+
+        function openProductPanel(productId) {
+            const product = productsDatabase[productId];
+            if (!product) return;
+
+            document.getElementById('panel-product-title').innerText = product.title;
+            document.getElementById('panel-product-desc').innerText = product.desc;
+            document.getElementById('panel-product-price').innerText = "₹" + product.price.toLocaleString('en-IN');
+
+            const sliderContainer = document.getElementById('panel-slider-container');
+            sliderContainer.innerHTML = "";
+            product.images.forEach((imgUrl) => {
+                const slide = document.createElement('div');
+                slide.className = "w-full h-full flex-shrink-0 snap-start select-none";
+                slide.innerHTML = `<img src="${imgUrl}" class="w-full h-full object-cover object-center pointer-events-none" alt="${product.title}">`;
+                sliderContainer.appendChild(slide);
+            });
+
+            sliderContainer.removeEventListener('scroll', syncActiveThumbnailBorder);
+            sliderContainer.addEventListener('scroll', syncActiveThumbnailBorder, { passive: true });
+
+            const thumbsContainer = document.getElementById('panel-thumbs-container');
+            thumbsContainer.innerHTML = "";
+            product.images.forEach((imgUrl, idx) => {
+                const thumbButton = document.createElement('button');
+                const activeBorderClass = idx === 0 ? 'border-black' : 'border-neutral-200';
+                thumbButton.className = `panel-thumb-btn w-16 h-20 bg-neutral-100 flex-shrink-0 border-2 ${activeBorderClass} overflow-hidden transition-all duration-200 focus:outline-none`;
+                thumbButton.innerHTML = `<img src="${imgUrl}" class="w-full h-full object-cover" alt="Thumb view">`;
+                thumbButton.onclick = () => jumpToGalleryImage(idx);
+                thumbsContainer.appendChild(thumbButton);
+            });
+
+            updatePanelControlsUI(productId);
+
+            const panel = document.getElementById('product-page-panel');
+            const container = document.getElementById('product-panel-container');
+            panel.classList.remove('pointer-events-none', 'opacity-0');
+            container.classList.remove('translate-x-full');
+            document.body.style.overflow = 'hidden';
+            sliderContainer.scrollLeft = 0;
+        }
+
+        function closeProductPanel() {
+            const panel = document.getElementById('product-page-panel');
+            const container = document.getElementById('product-panel-container');
+            panel.classList.add('pointer-events-none', 'opacity-0');
+            container.classList.add('translate-x-full');
+            document.body.style.overflow = '';
+        }
+
+        function handleSearch(query) {
+            const resultsContainer = document.getElementById('search-results');
+            resultsContainer.innerHTML = '';
+            const cleanQuery = query.trim().toLowerCase();
+            if (cleanQuery === '') return;
+
+            const matches = Object.values(productsDatabase).filter(product => 
+                product.title.toLowerCase().includes(cleanQuery) || 
+                product.desc.toLowerCase().includes(cleanQuery)
+            );
+
+            if (matches.length === 0) {
+                resultsContainer.innerHTML = `<p class="text-xs uppercase tracking-widest text-neutral-400 py-4">No structural matches discovered.</p>`;
+                return;
+            }
+
+            matches.forEach(product => {
+                const row = document.createElement('div');
+                row.className = "flex items-center gap-4 p-2 border border-neutral-100 hover:border-black cursor-pointer transition-all duration-200 group bg-neutral-50/50";
+                row.onclick = () => { toggleSearch(); openProductPanel(product.id); };
+                row.innerHTML = `
+                    <div class="w-16 h-20 bg-neutral-100 flex-shrink-0 overflow-hidden">
+                        <img src="${product.images[0]}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="${product.title}">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-black truncate">${product.title}</h4>
+                        <p class="text-[10px] text-neutral-400 line-clamp-1 mt-0.5 lowercase">${product.desc}</p>
+                        <p class="text-xs font-black text-black mt-1">₹${product.price.toLocaleString('en-IN')}</p>
+                    </div>
+                    <div class="pr-2">
+                        <svg class="w-4 h-4 text-neutral-300 group-hover:text-black transform group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"></path></svg>
+                    </div>
+                `;
+                resultsContainer.appendChild(row);
+            });
+        }
+
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            const container = document.getElementById('cart-container');
+            if (drawer.classList.contains('pointer-events-none')) {
+                drawer.classList.remove('pointer-events-none', 'opacity-0');
+                container.classList.remove('translate-x-full');
+                document.body.style.overflow = 'hidden';
+                // Reset coupon input when opening
+                if (userCart.length > 0) {
+                    document.getElementById('coupon-input').value = '';
+                }
+            } else {
+                drawer.classList.add('pointer-events-none', 'opacity-0');
+                container.classList.add('translate-x-full');
+                if(!document.getElementById('product-page-panel').classList.contains('pointer-events-none')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            }
+        }
+
+        function toggleSearch() {
+            const search = document.getElementById('search-overlay');
+            const searchInput = document.getElementById('search-input');
+            const resultsContainer = document.getElementById('search-results');
+            if (search.classList.contains('pointer-events-none')) {
+                search.classList.remove('pointer-events-none', 'opacity-0');
+                searchInput.focus();
+            } else {
+                search.classList.add('pointer-events-none', 'opacity-0');
+                searchInput.value = '';
+                resultsContainer.innerHTML = '';
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const container = document.getElementById('mobile-menu-container');
+            if (menu.classList.contains('pointer-events-none')) {
+                menu.classList.remove('pointer-events-none', 'opacity-0');
+                container.classList.remove('-translate-x-full');
+            } else {
+                menu.classList.add('pointer-events-none', 'opacity-0');
+                container.classList.add('-translate-x-full');
+            }
+        }
+
+        // Header scroll behavior
+        let lastScrollTop = 0;
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                header.style.transform = 'translateY(-100%)';
+            } else {
+                header.style.transform = 'translateY(0)';
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        }, { passive: true });
+
+        // Initialize coupon section hidden
+        window.onload = function() {
+            document.getElementById('coupon-section').style.display = 'none';
+        };
+    </script>
+</body>
+</html>
